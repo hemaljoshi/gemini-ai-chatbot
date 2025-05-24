@@ -1,28 +1,25 @@
-import { useState } from "react";
 import { Button } from "./button";
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { Chat } from "@/lib/types";
 
 interface SidebarProps {
   onChatSelect: (chatId: string | null) => void;
   currentChatId: string | null;
+  chats: Chat[];
+  onDeleteChat: (chatId: string) => void;
 }
 
 export function Sidebar({
   onChatSelect,
   currentChatId,
-  refreshTrigger,
-}: SidebarProps) {
-  const [chatSessions, setChatSessions] = useState<any[]>([]);
-
-  const handleNewChat = async () => {};
-
-  const handleDeleteChat = async (chatId: string, e: React.MouseEvent) => {};
-
+  chats,
+  onDeleteChat,
+}: Readonly<SidebarProps>) {
   return (
     <div className="w-64 h-full bg-[var(--chat-sidebar-bg)] border-r border-[var(--chat-sidebar-border)] flex flex-col relative z-30">
       <div className="p-4">
         <Button
-          onClick={handleNewChat}
+          onClick={() => onChatSelect(null)}
           className="w-full justify-start gap-2"
           variant="outline"
         >
@@ -31,7 +28,7 @@ export function Sidebar({
         </Button>
       </div>
       <div className="flex-1 overflow-y-auto px-2">
-        {chatSessions.map((chat) => (
+        {chats.map((chat) => (
           <div
             key={chat.id}
             onClick={() => onChatSelect(chat.id)}
@@ -44,7 +41,10 @@ export function Sidebar({
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              onClick={(e) => handleDeleteChat(chat.id, e)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteChat(chat.id);
+              }}
             >
               <TrashIcon className="h-4 w-4" />
             </Button>

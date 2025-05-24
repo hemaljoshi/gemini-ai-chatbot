@@ -3,6 +3,8 @@ export type Message = {
   content: string;
   role: "user" | "assistant";
   createdAt: Date;
+  pending?: boolean;
+  failed?: boolean;
 };
 
 export type ChatRequest = {
@@ -11,4 +13,13 @@ export type ChatRequest = {
 
 export type ChatResponse = {
   message: Message;
+  chatTitle?: string;
+};
+
+export type Chat = {
+  id: string;
+  title: string;
+  messages: Message[];
+  createdAt: Date;
+  updatedAt: Date;
 };

@@ -45,43 +45,57 @@ export async function POST(req: NextRequest) {
       lastMessage.content.substring(0, 100) + "..."
     );
 
-    // Send the message and get the response
-    const result = await chat.sendMessage(lastMessage.content);
-    const response = await result.response;
-    const text = response.text();
-    console.log("Received response:", text.substring(0, 100) + "...");
+    // Create a new ReadableStream for streaming the response
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          // Send the message and get the response
+          const result = await chat.sendMessage(lastMessage.content);
+          const response = await result.response;
+          const text = response.text();
+          console.log("Received response:", text.substring(0, 100) + "...");
 
-    // Create a new message object
-    const newMessage: Message = {
-      id: crypto.randomUUID(),
-      content: text,
-      role: "assistant",
-      createdAt: new Date(),
-    };
+          // Create a new message object
+          const newMessage: Message = {
+            id: crypto.randomUUID(),
+            content: text,
+            role: "assistant",
+            createdAt: new Date(),
+          };
 
-    // Generate a title for new conversations
-    let chatTitle: string | undefined;
-    if (messages.length === 1) {
-      // Only generate title for the first message in a conversation
-      const titlePrompt = `Generate a short, concise title (max 5 words) for this conversation based on the first message: "${lastMessage.content}". Return only the title text without any markdown formatting, quotes, or special characters.`;
-      const titleResult = await model.generateContent(titlePrompt);
-      const titleResponse = await titleResult.response;
-      // Clean up the title by removing markdown, quotes, and extra whitespace
-      chatTitle = titleResponse.text()
-        .replace(/[*_`]/g, '') // Remove markdown formatting
-        .replace(/^["']|["']$/g, '') // Remove surrounding quotes
-        .trim();
-    }
+          // Generate a title for new conversations
+          let chatTitle: string | undefined;
+          if (messages.length === 1) {
+            // Only generate title for the first message in a conversation
+            const titlePrompt = `Generate a short, concise title (max 5 words) for this conversation based on the first message: "${lastMessage.content}". Return only the title text without any markdown formatting, quotes, or special characters.`;
+            const titleResult = await model.generateContent(titlePrompt);
+            const titleResponse = await titleResult.response;
+            // Clean up the title by removing markdown, quotes, and extra whitespace
+            chatTitle = titleResponse.text()
+              .replace(/[*_`]/g, '') // Remove markdown formatting
+              .replace(/^["']|["']$/g, '') // Remove surrounding quotes
+              .trim();
+          }
 
-    return new Response(
-      JSON.stringify({ 
-        message: newMessage,
-        chatTitle 
-      }), 
-      {
-        headers: { "Content-Type": "application/json" },
-      }
-    );
+          // Send the complete response
+          controller.enqueue(
+            new TextEncoder().encode(
+              JSON.stringify({ message: newMessage, chatTitle })
+            )
+          );
+          controller.close();
+        } catch (error) {
+          controller.error(error);
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "application/json",
+        "Transfer-Encoding": "chunked",
+      },
+    });
   } catch (error) {
     console.error("Error in chat route:", error);
     // Log the full error details
