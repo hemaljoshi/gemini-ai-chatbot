@@ -7,7 +7,7 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || "");
 export async function POST(req: NextRequest) {
   try {
     console.log("API Key available:", !!process.env.GOOGLE_API_KEY);
-    console.log("Model name:", process.env.GEMINI_MODEL_NAME || "gemini-pro");
+    console.log("Model name:", process.env.GEMINI_MODEL_NAME || "gemini-2.0-flash");
 
     const { messages } = await req.json();
     console.log("Received messages:", messages.length);
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     const model = genAI.getGenerativeModel({
-      model: process.env.GEMINI_MODEL_NAME || "gemini-pro",
+      model: process.env.GEMINI_MODEL_NAME || "gemini-2.0-flash",
     });
 
     // Convert messages to the format expected by Gemini

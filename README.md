@@ -1,20 +1,25 @@
 # Gemini AI Chatbot
 
-A modern, responsive chatbot interface built with Next.js 14 and Google's Gemini AI API. This project features real-time streaming responses, a clean UI using Shadcn components, and a fully responsive design.
+A modern, responsive chatbot interface built with Next.js 14 and Google's Gemini AI. Features real-time streaming responses, dark/light mode, and persistent chat history.
+
+![Gemini AI Chatbot](./assets/chat.png)
 
 ## Features
 
-- 🎨 Modern UI with Shadcn components
-- 💬 Real-time chat interface
-- ⚡ Streaming responses
+- 💬 Real-time chat interface with streaming responses
+- 🌓 Dark/Light mode toggle
 - 📱 Fully responsive design
-- 🎯 Error handling with toast notifications
-- 🔄 Auto-scrolling chat
-- ⌨️ Loading states and animations
+- 💾 Persistent chat history
+- 📋 Message copy functionality
+- 🎨 Modern UI with Shadcn components
+- ⚡ Built with Next.js 14 (App Router)
+- 🎯 TypeScript support
+- 🎨 Tailwind CSS for styling
 
 ## Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 18+ 
+- npm or yarn
 - Google Gemini API key
 
 ## Getting Started
@@ -22,7 +27,7 @@ A modern, responsive chatbot interface built with Next.js 14 and Google's Gemini
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/hemaljoshi/gemini-ai-chatbot.git
 cd gemini-ai-chatbot
 ```
 
@@ -30,30 +35,46 @@ cd gemini-ai-chatbot
 
 ```bash
 npm install
+# or
+yarn install
 ```
 
-3. Create a `.env.local` file in the root directory and add your Google API key:
+3. Create a `.env.local` file in the root directory with the following variables:
 
 ```env
+# Google Gemini API Key (Required)
+# Get your API key from https://makersuite.google.com/app/apikey
 GOOGLE_API_KEY=your_api_key_here
-GEMINI_MODEL_NAME=gemini-pro  # Optional, defaults to gemini-pro
+
+# Optional: Specify a different Gemini model
+# Default is "gemini-2.0-flash"
+GEMINI_MODEL_NAME=gemini-2.0-flash
 ```
 
 4. Start the development server:
 
 ```bash
 npm run dev
+# or
+yarn dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| `GOOGLE_API_KEY` | Your Google Gemini API key | Yes | - |
+| `GEMINI_MODEL_NAME` | The Gemini model to use | No | gemini-2.0-flash |
+
 ## Tech Stack
 
-- Next.js 14 (App Router)
-- TypeScript
-- Tailwind CSS
-- Shadcn UI
-- Google Generative AI SDK
+- [Next.js 14](https://nextjs.org/) - React framework
+- [@google/generative-ai](https://www.npmjs.com/package/@google/generative-ai) - Google Gemini AI SDK
+- [Shadcn UI](https://ui.shadcn.com/) - UI components
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
 
 ## Project Structure
 
@@ -62,23 +83,20 @@ npm run dev
 │   ├── api/
 │   │   └── chat/
 │   │       └── route.ts    # API route for chat
-│   └── page.tsx            # Main page
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
 ├── components/
-│   ├── ui/                 # Shadcn UI components
-│   └── chat-interface.tsx  # Chat interface component
-├── lib/
-│   └── types.ts           # TypeScript types
-└── public/                # Static assets
+│   ├── chat-interface.tsx # Main chat component
+│   └── ui/               # UI components
+├── hooks/
+│   ├── use-chat-history.ts # Chat history management
+│   └── use-toast.ts       # Toast notifications
+└── lib/
+    └── types.ts          # TypeScript types
 ```
 
-## Contributing
+## Acknowledgments
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- [Google Gemini AI](https://ai.google.dev/) for the AI capabilities
+- [Shadcn UI](https://ui.shadcn.com/) for the beautiful components
+- [Next.js](https://nextjs.org/) for the amazing framework
