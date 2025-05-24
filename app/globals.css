@@ -8,7 +8,7 @@
 
     --foreground: 20 14.3% 4.1%;
 
-    --card: 0 0% 100%;
+    --card: 240 100% 99%;
 
     --card-foreground: 20 14.3% 4.1%;
 
@@ -16,31 +16,31 @@
 
     --popover-foreground: 20 14.3% 4.1%;
 
-    --primary: 24 9.8% 10%;
+    --primary: 245 80% 60%;
 
     --primary-foreground: 60 9.1% 97.8%;
 
-    --secondary: 60 4.8% 95.9%;
+    --secondary: 220 60% 96%;
 
     --secondary-foreground: 24 9.8% 10%;
 
-    --muted: 60 4.8% 95.9%;
+    --muted: 220 60% 96%;
 
     --muted-foreground: 25 5.3% 44.7%;
 
-    --accent: 60 4.8% 95.9%;
+    --accent: 245 80% 60%;
 
-    --accent-foreground: 24 9.8% 10%;
+    --accent-foreground: 60 9.1% 97.8%;
 
     --destructive: 0 84.2% 60.2%;
 
     --destructive-foreground: 60 9.1% 97.8%;
 
-    --border: 20 5.9% 90%;
+    --border: 220 13% 91%;
 
-    --input: 20 5.9% 90%;
+    --input: 240 100% 99%;
 
-    --ring: 20 14.3% 4.1%;
+    --ring: 245 80% 60%;
 
     --chart-1: 12 76% 61%;
 
@@ -54,12 +54,18 @@
 
     --radius: 0.5rem;
 
-    --chat-bg-gradient-from: #5f2c82;
-    --chat-bg-gradient-via: #3a1c71;
-    --chat-bg-gradient-to: #274993;
-    --chat-card-bg: rgba(24, 19, 60, 0.7);
-    --chat-bot-bubble: rgba(103, 100, 147, 0.3);
-    --chat-user-bubble: #2563eb;
+    --chat-bg-gradient-from: #e0e7ff;
+    --chat-bg-gradient-via: #f3e8ff;
+    --chat-bg-gradient-to: #c7d2fe;
+    --chat-card-bg: rgba(240, 245, 255, 0.95);
+    --chat-bot-bubble: rgba(99, 102, 241, 0.1);
+    --chat-user-bubble: #a5b4fc;
+    --chat-bot-bubble-border: #c7d2fe;
+    --chat-user-bubble-border: #818cf8;
+    --chat-input-bg: #f1f5f9;
+    --chat-input-border: #cbd5e1;
+    --chat-sidebar-bg: rgba(240, 245, 255, 1);
+    --chat-sidebar-border: #e2e8f0;
   }
   .dark {
     --background: 20 14.3% 4.1%;
@@ -109,6 +115,19 @@
     --chart-4: 280 65% 60%;
 
     --chart-5: 340 75% 55%;
+
+    --chat-bg-gradient-from: #5f2c82;
+    --chat-bg-gradient-via: #3a1c71;
+    --chat-bg-gradient-to: #274993;
+    --chat-card-bg: rgba(24, 19, 60, 0.7);
+    --chat-bot-bubble: rgba(103, 100, 147, 0.3);
+    --chat-user-bubble: #2563eb;
+    --chat-bot-bubble-border: #312e81;
+    --chat-user-bubble-border: #3730a3;
+    --chat-input-bg: #18133c;
+    --chat-input-border: #312e81;
+    --chat-sidebar-bg: rgba(24, 19, 60, 1);
+    --chat-sidebar-border: rgba(255,255,255,0.08);
   }
 }
 
@@ -117,7 +136,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-to-br from-[var(--chat-bg-gradient-from)] via-[var(--chat-bg-gradient-via)] to-[var(--chat-bg-gradient-to)] text-white min-h-screen;
-    color-scheme: dark;
+    background: linear-gradient(
+      to bottom right,
+      var(--chat-bg-gradient-from),
+      var(--chat-bg-gradient-via),
+      var(--chat-bg-gradient-to)
+    );
+    color: hsl(var(--foreground));
+    min-height: 100vh;
+    @apply antialiased;
   }
 }

@@ -34,14 +34,14 @@ export function ChatInput({ input, isLoading, onInputChange, onSubmit }: ChatInp
 
   return (
     <form onSubmit={onSubmit} className="relative">
-      <div className="flex items-end gap-3 bg-gray-800/50 rounded-2xl p-3 border border-gray-600/30">
+      <div className="flex items-end gap-3 bg-[var(--chat-input-bg)] rounded-2xl p-3 border border-[var(--chat-input-border)]">
         <textarea
           ref={textareaRef}
           value={input}
           onChange={(e) => onInputChange(e.target.value)}
           placeholder="Type your message..."
           disabled={isLoading}
-          className="flex-1 bg-transparent border-none outline-none resize-none text-white placeholder-gray-400 min-h-[24px] max-h-[120px]"
+          className="flex-1 bg-transparent border-none outline-none resize-none text-foreground placeholder:text-muted-foreground min-h-[24px] max-h-[120px]"
           rows={1}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -53,7 +53,7 @@ export function ChatInput({ input, isLoading, onInputChange, onSubmit }: ChatInp
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="p-2 rounded-full bg-primary text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors"
+          className="p-2 rounded-full bg-primary text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors"
         >
           <Send className="w-5 h-5" />
         </button>

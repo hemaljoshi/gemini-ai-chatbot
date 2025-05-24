@@ -59,9 +59,29 @@ export async function POST(req: NextRequest) {
       createdAt: new Date(),
     };
 
-    return new Response(JSON.stringify({ message: newMessage }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    // Generate a title for new conversations
+    let chatTitle: string | undefined;
+    if (messages.length === 1) {
+      // Only generate title for the first message in a conversation
+      const titlePrompt = `Generate a short, concise title (max 5 words) for this conversation based on the first message: "${lastMessage.content}". Return only the title text without any markdown formatting, quotes, or special characters.`;
+      const titleResult = await model.generateContent(titlePrompt);
+      const titleResponse = await titleResult.response;
+      // Clean up the title by removing markdown, quotes, and extra whitespace
+      chatTitle = titleResponse.text()
+        .replace(/[*_`]/g, '') // Remove markdown formatting
+        .replace(/^["']|["']$/g, '') // Remove surrounding quotes
+        .trim();
+    }
+
+    return new Response(
+      JSON.stringify({ 
+        message: newMessage,
+        chatTitle 
+      }), 
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error("Error in chat route:", error);
     // Log the full error details
